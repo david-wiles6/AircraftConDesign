@@ -1,6 +1,6 @@
 %Initial Weight Estimation for an Aircraft
 
-function WeightEst = InitialWeightEst(W_pay, A, C, steps_id, steps_L, steps_V, LDRatio, TSFC, W0_Guess) 
+function [WeightEst, W_e] = InitialWeightEst(W_pay, A, C, steps_id, steps_L, steps_V, LDRatio, TSFC, W0_Guess) 
 %steps id: 1 for distance based cruise, 2 for distance based dash, 3 for
 %time based loiter
 epsilon = 100000;
@@ -32,4 +32,5 @@ while(epsilon>100)
     end
 end
 WeightEst = W_new;
+W_e = W_new*R_empty;
 end
