@@ -20,7 +20,6 @@ while(epsilon>100)
         R_total = R(ii)*R_total;
     end
     R_land = .995;
-    
     R_f = 1.06*(1-R_takeoff*R_climbaccel*R_total*R_land);
     
     W_new = W_pay/(1-R_empty-R_f);
@@ -33,4 +32,5 @@ while(epsilon>100)
 end
 WeightEst = W_new;
 W_e = W_new*R_empty;
+
 end
