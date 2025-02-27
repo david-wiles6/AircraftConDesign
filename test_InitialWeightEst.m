@@ -1,12 +1,12 @@
 clear all
 
 % Parameters for DCAP Mission
-stages = [1 3 2 1];
-lengths = [300*6076.12 4*3600 100*6076.12 400*6076.12];
-speeds = [.8*994.8 0 1.6*994.8 0.8*994.8];
+stages = [1 3 2 1 3];
+lengths = [300*6076.12 4*3600 100*6076.12 400*6076.12 30*60];
+speeds = [.8*994.8 0 1.6*994.8 0.8*994.8 0];
 engine_costs = linspace(3*10^6, 9.5*10^6, 100);
 LDRatios = linspace(12, 25, 100);
-W_pay = 1100+2083+681;
+W_pay = 1100+2083+681
 for i = 1:length(W_pay)
 for j = 1:length(LDRatios)
    [W_est0(i, j), W_e(i, j)] = InitialWeightEst(W_pay(i), 2.34, -.13, stages, lengths, speeds, LDRatios(j), .61, 40000);
@@ -24,7 +24,7 @@ hold on
 ylabel("TOGW (lbs)")
 xlabel("L/D Ratio")
 plot(LDRatios, W_est0)
-plot(LDRatios, W_e)
+%plot(LDRatios, W_e)
 hold off
 %{
 figure
