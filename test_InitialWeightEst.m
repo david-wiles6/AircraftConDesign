@@ -1,5 +1,5 @@
 clear all
-
+close all
 % Parameters for DCAP Mission
 stages = [1 3 2 1 3];
 lengths = [300*6076.12 4*3600 100*6076.12 400*6076.12 30*60];
@@ -15,8 +15,8 @@ end
 end
 figure
 hold on
-ylabel("Cost in Millions of Dollars")
 xlabel("L/D Ratio")
+ylabel("Cost in Millions of Dollars")
 plot(LDRatios, Cost_est/1000000000)
 hold off
 figure
