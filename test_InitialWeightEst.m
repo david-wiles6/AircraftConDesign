@@ -21,8 +21,8 @@ plot(LDRatios, Cost_est/1000000000)
 hold off
 figure
 hold on
-ylabel("TOGW (lbs)")
 xlabel("L/D Ratio")
+ylabel("Weight in lbs")
 plot(LDRatios, W_est0)
 %plot(LDRatios, W_e)
 hold off
