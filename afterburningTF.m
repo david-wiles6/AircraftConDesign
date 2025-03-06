@@ -1,7 +1,7 @@
-function [TSFC, Thrust, TSFCAB, ThrustAB] = afterburningTF(M, z, )
-%
+function [TSFC, Thrust, TSFCAB, ThrustAB] = afterburningTF(M, z, radius, T_04MAX)
+% M, Z, radius, T04_MAX
 % Engine Simulation ew
-A_in = pi*(1^2);
+A_in = pi*(radius^2);
 % Flight Conditions
 
 % Altitude and air properties
@@ -34,7 +34,7 @@ T_03 = T_02*(1+(1/n_c)*(P_rc^((g-1)/g)-1));
 
 % Burner
 %Input: T_04 (turbine inlet temp)
-T_04 = 1922; %K
+T_04 = T_04MAX; %K
 QR = 42000000; %J/kg
 C_p = 1005; %J/kg
 f = (T_04/T_03-1)/(QR/(C_p*T_03)-T_04/T_03);
