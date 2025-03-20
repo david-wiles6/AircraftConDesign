@@ -21,9 +21,3 @@ Descend to sea level
 
 %}
 
-stages = [0 2 4 0 1 3];
-lengths = [35000 200 0 30000 200 0.5*3600];
-speeds = [1.6 1.6 1.2 0.8 0.8 0.6];
-LDRatio = 14;
-W_pay = 1100+2083+681;
-[W_est0, W_e] = InitialWeightEst(W_pay, 2.34, -.13, stages, lengths, speeds, LDRatio, .61, 40000)

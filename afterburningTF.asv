@@ -19,14 +19,14 @@ P_02 = Pa*(1 + n_d*(T_02/Ta-1))^(g/(g-1));
 % Fan
 P_rf = 1.5;
 P_08 = P_02 * P_rf;
-n_f = .95;
+n_f = .;
 T_08 = T_02 * (1 + (1/n_f)*(P_rf^((g-1)/g)-1));
 u_ef = sqrt(2*n_f*g/(g-1)*R*T_08*(1-(Pa/P_08)^((g-1)/g)));
 
 % Compressor
 %Input: P_rc
 P_03 = P_rc*P_02;
-n_c = .95;
+n_c = 1;
 T_03 = T_02*(1+(1/n_c)*(P_rc^((g-1)/g)-1));
 
 % Burner
@@ -38,7 +38,7 @@ f = (T_04/T_03-1)/(QR/(C_p*T_03)-T_04/T_03);
 P_04 = P_03;
 
 % Turbine
-n_t = .95;
+n_t = 1;
 T_05 = T_04 - C_p/(n_c*n_t*C_p)*(T_03-T_02)-B*(T_08-T_02);
 P_05 = P_04*(1-1/n_t*(1-T_05/T_04))^(g/(g-1));
 
@@ -50,9 +50,9 @@ P_06 = P_05;
 Tmax_AB = 2500;
 T_06AB = Tmax_AB;
 P_06AB = P_05;
-fAB = (T_06AB/T_05-1)/(QR/(C_p*T_05)-T_06AB/T_05);
+
 % Nozzle
-n_n = .98;
+n_n = 1;
 u_en = sqrt(2*n_n*g/(g-1)*R*T_06*(1-(Pa/P_06)^((g-1)/g)));
 u_enAB = sqrt(2*n_n*g/(g-1)*R*T_06AB*(1-(Pa/P_06AB)^((g-1)/g)));
 
@@ -63,6 +63,6 @@ Thrust = SpT*m_dota;
 SpTAB = ((1+f)*u_enAB+B*u_ef-(1+B)*u);
 TSFC = f/SpT;
 ThrustAB = SpTAB*m_dota;
-TSFCAB = fAB*m_dota/ThrustAB;
+TSFCAB = f*m_dota/ThrustAB;
 
 end
