@@ -21,3 +21,9 @@ Descend to sea level
 
 %}
 
+%takeoff/climb time
+%dash time
+%combat
+%climb
+%cruise time
+
