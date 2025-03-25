@@ -3,7 +3,7 @@ clear all
 % (V*(T*cos(alpha) - D)/W
 
 M = linspace(0.2, 0.89, 100); % mach
-S = 350; %ft^2
+S = 407; %ft^2
 altitude = linspace(0, 40000, 200);
 R = 1716;
 gamma = 1.4;
@@ -11,10 +11,10 @@ gamma = 1.4;
 V = zeros(length(M), length(altitude));
 %combat weight
 W = 13000;
-W_TO = 20000;
+W_TO = 26704;
 a0 = 2.578; %rad
-lambda = 45*pi/180;
-AR = 3.5;
+lambda = 50*pi/180;
+AR = 1.69;
 acomp = a0*cos(lambda)./(sqrt(1-M.^2*cos(lambda)^2*(a0*cos(lambda)/(pi*AR))^2)+(a0*cos(lambda)/(pi*AR))); %scalar for now
 
 %Cl = acomp*(alpha*pi/180);

@@ -21,6 +21,6 @@ elseif M > 1.2
         Cfc = Cfc+.455/(log(R)/log(10)*(1+.144*M^2)^.65);
         Cf_total = Cf_total+Cfc*S_wet(i);
     end
-    CD0 = 1.05*(Cf_total/S + 2.5*(1-.386*(M-1.2)^.57*(1-pi*sweep^.77/100)*9*pi/2*(Amax/14)))
+    CD0 = 1.05*(Cf_total/S + 2.5*(1-.386*(M-1.2)))
 end
 %Cd = Cd0 + KCL^2 if M<0.4
