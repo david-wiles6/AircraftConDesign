@@ -13,7 +13,7 @@ u = M*sqrt(g*R*Ta);
 m_dota = rhoa*A_in*u;
 % Inlet
 T_02 = Ta*(1 + (g-1)/2*(M^2));
-n_d = 1;
+n_d = .9;
 P_02 = Pa*(1 + n_d*(T_02/Ta-1))^(g/(g-1));
 
 % Fan
@@ -47,7 +47,7 @@ T_06 = T_05;
 P_06 = P_05;
 
 % Afterburner
-Tmax_AB = 2500;
+Tmax_AB = 2000;
 T_06AB = Tmax_AB;
 P_06AB = P_05;
 fAB = (T_06AB/T_05-1)/(QR/(C_p*T_05)-T_06AB/T_05);
@@ -63,6 +63,6 @@ Thrust = SpT*m_dota;
 SpTAB = ((1+f)*u_enAB+B*u_ef-(1+B)*u);
 TSFC = f/SpT;
 ThrustAB = SpTAB*m_dota;
-TSFCAB = fAB*m_dota/ThrustAB;
+TSFCAB = (fAB+f)/SpTAB;
 
 end

@@ -2,7 +2,7 @@
 clear all
 % (V*(T*cos(alpha) - D)/W
 
-M = linspace(0.2, 1.6, 100); % mach
+M = linspace(0.2, 2, 100); % mach
 S = 594; %ft^2
 altitude = linspace(0, 40000, 200);
 R = 1716;
@@ -42,28 +42,25 @@ end
 
 %    end
 %end
-figure("Name","1g Drag")
-hold on 
-contour(M, altitude, D_1g)
-hold off
+
 figure("Name", "1g Military Manuever")
 hold on
 %surf(M, altitude, Spex, 'EdgeColor','none')
-contour(M, altitude, Spex_1g_Mil)
+contourf(M, altitude, Spex_1g_Mil)
 hold off
 figure("Name", "1g Maximum Maneuver")
 hold on
 %surf(M, altitude, Spex_1g_Max, 'EdgeColor','none')
-contour(M, altitude, Spex_1g_Max)
+contourf(M, altitude, Spex_1g_Max)
 hold off
 figure("Name", "5g Maximum Maneuver")
 hold on
 %surf(M, altitude, Spex, 'EdgeColor','none')
-contour(M, altitude, Spex_5g_Max)
+contourf(M, altitude, Spex_5g_Max)
 hold off
 figure("Name", "1g Maximum Takeoff")
 hold on
 %surf(M, altitude, Spex, 'EdgeColor','none')
-contour(M, altitude, Spex_1g_Max_TO)
+contourf(M, altitude, Spex_1g_Max_TO)
 hold off
 
