@@ -7,4 +7,8 @@ for i = 1:length(M)
 [~, TSFC(i, j), ~, TSFC_AB(i, j), ~] = afterburningTF(M(i), z(j)/3.281, A, 1922, 26, 0.3);
     end
 end
+figure
 contour(M, z, TSFC'*9.804*3600)
+
+figure
+contour(M, z, TSFC_AB'*9.804*3600)
