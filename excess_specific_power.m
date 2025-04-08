@@ -2,16 +2,17 @@
 clear all
 % (V*(T*cos(alpha) - D)/W
 
-M = linspace(0.2, 2, 100); % mach
-S = 594; %ft^2
+M = linspace(0.2, 1.6, 100); % mach
+S = 720; %ft^2
 altitude = linspace(0, 40000, 200);
 R = 1716;
 gamma = 1.4;
 %alpha = linspace(0, 10, 10); %deg
 V = zeros(length(M), length(altitude));
 %combat weight
-W = 20000;
 W_TO = 26704;
+W_f = 7810;
+W = W_TO-.5*W_f;
 a0 = 2.578; %rad
 lambda = 60*pi/180;
 AR = 1.23;
@@ -46,21 +47,21 @@ end
 figure("Name", "1g Military Manuever")
 hold on
 %surf(M, altitude, Spex, 'EdgeColor','none')
-contourf(M, altitude, Spex_1g_Mil)
+contour(M, altitude, Spex_1g_Mil)
 hold off
 figure("Name", "1g Maximum Maneuver")
 hold on
 %surf(M, altitude, Spex_1g_Max, 'EdgeColor','none')
-contourf(M, altitude, Spex_1g_Max)
+contour(M, altitude, Spex_1g_Max)
 hold off
 figure("Name", "5g Maximum Maneuver")
 hold on
 %surf(M, altitude, Spex, 'EdgeColor','none')
-contourf(M, altitude, Spex_5g_Max)
+contour(M, altitude, Spex_5g_Max)
 hold off
 figure("Name", "1g Maximum Takeoff")
 hold on
 %surf(M, altitude, Spex, 'EdgeColor','none')
-contourf(M, altitude, Spex_1g_Max_TO)
+contour(M, altitude, Spex_1g_Max_TO)
 hold off
 

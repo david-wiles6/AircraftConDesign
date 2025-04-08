@@ -7,7 +7,7 @@ Z = linspace(0, 40000/3.281, 100);
 
 for i = 1:length(M)
     for j = 1:length(Z)
-        [u_e(i, j), ~, T(i, j), ~, TAB(i, j)] = afterburningTF(M(i), Z(j), 0.22, 1922, 26, 0.3);
+        [SpT(i, j), ~, T(i, j), ~, TAB(i, j)] = afterburningTF(M(i), Z(j), 0.22, 1922, 26, 0.3);
     end
 end
 
@@ -19,6 +19,6 @@ end
 figure
 hold on
 %contour(M, Z, T'/4.448)
-contour(M, Z, TAB'/4.448)
+contour(M, Z*3.281, T'/4.448)
 hold off
 

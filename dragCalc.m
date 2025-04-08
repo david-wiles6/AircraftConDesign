@@ -9,9 +9,9 @@ q = 0.5*rho/515.4*u^2; %slugs/ft*s
 K = 1/(pi*AR*planeff);
 k_rough = 3.33*10^(-5);
 sections = ["Fuselage", "Wing", "Vertical Tail"];
-l = [36 14.5 27.9077/12];
-S_wet = [36*5^2*pi S*2 10];
-Amax = 27;
+l = [40 16 27.9077/12];
+S_wet = [(40*10*pi+2*5^2*pi) S*2 10];
+Amax = 29;
 sweep = 60;
 Cfc = 0;
 Cf_total = 0;
@@ -24,7 +24,7 @@ elseif M >= 1.21
         Cfc = .455/(log(R)/log(10)*(1+.144*M^2)^.65);
         Cf_total = Cf_total+Cfc*S_wet(i);
     end
-    CD0 = 1.05*(Cf_total/S + 2.5*(1-.386*(M-1.2)^.57)*(1-pi*(sweep^.77)/100)*9*pi/2*(Amax/14.5));
+    CD0 = 1.05*(Cf_total/S + 2.5*(1-.386*(M-1.2)^.57)*(1-pi*(sweep^.77)/100)*9*pi/2*(Amax/l(1)));
     D = CD0*q;
 else
    [qmax, maxdrag] = dragCalc(alt, 1.21, S, n, W, AR);

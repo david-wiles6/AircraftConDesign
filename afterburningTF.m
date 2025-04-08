@@ -1,4 +1,4 @@
-function [u_en, TSFC, Thrust, TSFCAB, ThrustAB] = afterburningTF(M, z, A_in, T_04MAX, P_rc, B)
+function [SpT, TSFC, Thrust, TSFCAB, ThrustAB] = afterburningTF(M, z, A_in, T_04MAX, P_rc, B)
 % M, Z, radius, T04_MAX, Compressor Pressure Ratio, Bypass Ratio
 % Engine Simulation
 % Flight Conditions
@@ -11,6 +11,10 @@ R = 287; %R/MM
 g = 1.4;
 u = M*sqrt(g*R*Ta);
 m_dota = rhoa*A_in*u;
+T_total = Ta*(1+0.5*(g-1)*M^2);
+P_total = Pa*(T_total/Ta)^(g/(g-1));
+%m_dota = Pa*A_in*M*sqrt(g/T_total*9.807/R*(P_total/Pa)^((g-1)/g));
+
 % Inlet
 T_02 = Ta*(1 + (g-1)/2*(M^2));
 n_d = .9;
@@ -35,10 +39,10 @@ T_04 = T_04MAX; %K
 QR = 42000000; %J/kg
 C_p = 1005; %J/kg
 f = (T_04/T_03-1)/(QR/(C_p*T_03)-T_04/T_03);
-P_04 = P_03;
+P_04 = .9*P_03;
 
 % Turbine
-n_t = .95;
+n_t = .85;
 T_05 = T_04 - C_p/(n_c*n_t*C_p)*(T_03-T_02)-B*(T_08-T_02);
 P_05 = P_04*(1-1/n_t*(1-T_05/T_04))^(g/(g-1));
 
@@ -52,7 +56,7 @@ T_06AB = Tmax_AB;
 P_06AB = P_05;
 fAB = (T_06AB/T_05-1)/(QR/(C_p*T_05)-T_06AB/T_05);
 % Nozzle
-n_n = .98;
+n_n = .9;
 u_en = sqrt(2*n_n*g/(g-1)*R*T_06*(1-(Pa/P_06)^((g-1)/g)));
 u_enAB = sqrt(2*n_n*g/(g-1)*R*T_06AB*(1-(Pa/P_06AB)^((g-1)/g)));
 
