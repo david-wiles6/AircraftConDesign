@@ -1,4 +1,4 @@
-function [q, CD0, K] = dragCalc(alt, M, S, n, W, AR)
+function [CD, D, CD0] = dragCalc(alt, M, S, n, W, AR)
 
 g = 1.4;
 R = 287;
@@ -20,6 +20,7 @@ if M<=0.8
     CD0 = .0035*total_Swet/S;
     CL = W/(q*S);
     D = (q*S*CD0+K/q*n^2*W^2/S)/sqrt(1-M^2);
+    CD = D/q/S;
 elseif M >= 1.21
     for i = 1:length(sections)
         R = 44.62*(l(i)/k_rough)^(1.053)*M^1.16;
@@ -27,9 +28,12 @@ elseif M >= 1.21
         Cf_total = Cf_total+Cfc*S_wet(i);
     end
     CD0 = 1.05*(Cf_total/S + 2.5*(1-.386*(M-1.2)^.57)*(1-pi*(sweep^.77)/100)*9*pi/2*(Amax/l(1)));
-    D = CD0*q;
+    CD0 = CD0/S;
+    %dietrich kuchermann
+    D = (CD0*q*S+M/(4*(M+3)*W*n));
+    CD = D/q/S;
 else
-   CD0 = -1;
+   CD0 = 0;
    [qmax, maxdrag] = dragCalc(alt, 1.21, S, n, W, AR);
    [qmin, mindrag] = dragCalc(alt, 0.8, S, n, W, AR);
    superCd = maxdrag/qmax;
@@ -46,6 +50,8 @@ else
    b = d(2);
    c = d(3);
    D = (a*M^2 + b*M + c)/q;
+   D = -1;
+   CD = 0;
 
 end
 %Cd = Cd0 + KCL^2 if M<0.4

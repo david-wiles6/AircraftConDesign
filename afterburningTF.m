@@ -15,13 +15,20 @@ T_total = Ta*(1+0.5*(g-1)*M^2);
 P_total = Pa*(T_total/Ta)^(g/(g-1));
 %m_dota = Pa*A_in*M*sqrt(g/T_total*9.807/R*(P_total/Pa)^((g-1)/g));
 design_mach = 0.9;
+design_z = 25000/3.281;
 ideal_m_dota = rhoa*A_in*u;
 design_m_dota = 150;
-if(M<design_mach)
+if(M<design_mach && z < design_z)
     m_dota = 150;
-else
+elseif(z < design_z)
     A_adjusted = A_in*1/(2*M/design_mach-1);
     m_dota =  150*1/(2*M/design_mach-1);
+elseif(M < design_mach)
+    [~, ~, ~, ideal_rho] = atmosisa(design_z);
+    m_dota = design_m_dota*rhoa/ideal_rho;
+else
+    [~, ~, ~, ideal_rho] = atmosisa(design_z);
+    m_dota =  150*1/(2*M/design_mach-1)*rhoa/ideal_rho;
 end
 % Inlet
 T_02 = Ta*(1 + (g-1)/2*(M^2));

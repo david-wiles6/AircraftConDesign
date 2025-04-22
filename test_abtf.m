@@ -1,8 +1,8 @@
 %test_abtf.m
 clear all
-M = linspace(0.2, 1.6, 100);
+M = linspace(0, 1.6, 100);
 %Z = linspace(0, 40000/3.281, 100);
-Z = 0;
+Z = linspace(0, 40000/3.281, 100);
 %M = 0.9;
 
 for i = 1:length(M)
@@ -18,7 +18,11 @@ end
 %TImperial = T/4.448
 figure
 hold on
-plot(M, T'/4.448)
-%contour(M, Z*3.281, SpT')
+xlabel("Mach Number")
+ylabel("Altitude (ft)")
+title("Thrust in lbs vs Altitude and Mach Number")
+%contour(M, Z, T'/4.448)
+[C, h] = contour(M, Z*3.281, T'/4.448);
+clabel(C, h)
 hold off
 
