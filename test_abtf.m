@@ -1,13 +1,13 @@
 %test_abtf.m
 clear all
 M = linspace(0.2, 1.6, 100);
-Z = linspace(0, 40000/3.281, 100);
-%Z = 0;
+%Z = linspace(0, 40000/3.281, 100);
+Z = 0;
 %M = 0.9;
 
 for i = 1:length(M)
     for j = 1:length(Z)
-        [SpT(i, j), ~, T(i, j), ~, TAB(i, j)] = afterburningTF(M(i), Z(j), 0.22, 1922, 26, 0.3);
+        [m_dota(i, j), ~, T(i, j), ~, TAB(i, j)] = afterburningTF(M(i), Z(j), 0.22, 1922, 26, 0.3);
     end
 end
 
@@ -18,7 +18,7 @@ end
 %TImperial = T/4.448
 figure
 hold on
-%contour(M, Z, T'/4.448)
-contour(M, Z*3.281, T'/4.448)
+plot(M, T'/4.448)
+%contour(M, Z*3.281, SpT')
 hold off
 

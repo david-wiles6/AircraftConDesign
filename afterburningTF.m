@@ -1,4 +1,4 @@
-function [SpT, TSFC, Thrust, TSFCAB, ThrustAB] = afterburningTF(M, z, A_in, T_04MAX, P_rc, B)
+function [m_dota, TSFC, Thrust, TSFCAB, ThrustAB] = afterburningTF(M, z, A_in, T_04MAX, P_rc, B)
 % M, Z, radius, T04_MAX, Compressor Pressure Ratio, Bypass Ratio
 % Engine Simulation
 % Flight Conditions
@@ -10,14 +10,26 @@ R = 287; %R/MM
 % Speed
 g = 1.4;
 u = M*sqrt(g*R*Ta);
-m_dota = rhoa*A_in*u;
+%m_dota = rhoa*A_in*u;
 T_total = Ta*(1+0.5*(g-1)*M^2);
 P_total = Pa*(T_total/Ta)^(g/(g-1));
 %m_dota = Pa*A_in*M*sqrt(g/T_total*9.807/R*(P_total/Pa)^((g-1)/g));
-
+design_mach = 0.9;
+ideal_m_dota = rhoa*A_in*u;
+design_m_dota = 150;
+if(M<design_mach)
+    m_dota = 150;
+else
+    A_adjusted = A_in*1/(2*M/design_mach-1);
+    m_dota =  150*1/(2*M/design_mach-1);
+end
 % Inlet
 T_02 = Ta*(1 + (g-1)/2*(M^2));
-n_d = .9;
+if M>1
+    n_d = 0.9*(1-.075*(M - 1)^1.35);
+else
+    n_d = .9;
+end
 P_02 = Pa*(1 + n_d*(T_02/Ta-1))^(g/(g-1));
 
 % Fan

@@ -27,7 +27,7 @@ acomp = a0*cos(lambda)./(sqrt(1-M.^2*cos(lambda)^2*(a0*cos(lambda)/(pi*AR))^2)+(
 
 for i = 1:length(altitude)
     for j = 1:length(M)
-        [~, ~, T(i, j), ~, TAB(i, j)] = afterburningTF(M(j), altitude(i)/3.281, .61, 1922, 26, 0.3);
+        [~, ~, T(i, j), ~, TAB(i, j)] = afterburningTF(M(j), altitude(i)/3.281, .51, 1922, 26, 0.3);
         V(i, j) = M(j)*sqrt(gamma*R*calcTempRankine(altitude(i))); %ft/sec
         Cl_min(i, j) = W./(0.5*calcRhoSlugs(altitude(i))*S.*V(i, j).^2);
         alpha_min(i, j) = 180/pi*Cl_min(i, j)/acomp(j);
@@ -43,7 +43,10 @@ end
 
 %    end
 %end
-
+figure("Name","Drag")
+hold on
+contour(M, altitude, D_1g)
+hold off
 figure("Name", "1g Military Manuever")
 hold on
 %surf(M, altitude, Spex, 'EdgeColor','none')
