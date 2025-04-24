@@ -45,7 +45,8 @@ end
 %end
 figure("Name","Drag")
 hold on
-contour(M, altitude, D_1g)
+[C, h] = contour(M, altitude, D_1g);
+clabel(C, h)
 hold off
 figure("Name", "1g Military Manuever")
 hold on
