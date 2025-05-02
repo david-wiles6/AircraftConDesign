@@ -1,0 +1,259 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>afterburningTF</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2025-04-24"><meta name="DC.source" content="afterburningTF.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [m_dota, TSFC, Thrust, TSFCAB, ThrustAB] = afterburningTF(M, z, A_in, T_04MAX, P_rc, B)
+<span class="comment">% M, Z, radius, T04_MAX, Compressor Pressure Ratio, Bypass Ratio</span>
+<span class="comment">% Engine Simulation</span>
+<span class="comment">% Flight Conditions</span>
+
+<span class="comment">% Altitude and air properties</span>
+[Ta, ~, Pa, rhoa] = atmosisa(z);
+R = 287; <span class="comment">%R/MM</span>
+
+<span class="comment">% Speed</span>
+g = 1.4;
+u = M*sqrt(g*R*Ta);
+<span class="comment">%m_dota = rhoa*A_in*u;</span>
+T_total = Ta*(1+0.5*(g-1)*M^2);
+P_total = Pa*(T_total/Ta)^(g/(g-1));
+<span class="comment">%m_dota = Pa*A_in*M*sqrt(g/T_total*9.807/R*(P_total/Pa)^((g-1)/g));</span>
+design_mach = 0.9;
+design_z = 25000/3.281;
+ideal_m_dota = rhoa*A_in*u;
+design_m_dota = 150;
+<span class="keyword">if</span>(M&lt;design_mach &amp;&amp; z &lt; design_z)
+    m_dota = 150;
+<span class="keyword">elseif</span>(z &lt; design_z)
+    A_adjusted = A_in*1/(2*M/design_mach-1);
+    m_dota =  150*1/(2*M/design_mach-1);
+<span class="keyword">elseif</span>(M &lt; design_mach)
+    [~, ~, ~, ideal_rho] = atmosisa(design_z);
+    m_dota = design_m_dota*rhoa/ideal_rho;
+<span class="keyword">else</span>
+    [~, ~, ~, ideal_rho] = atmosisa(design_z);
+    m_dota =  150*1/(2*M/design_mach-1)*rhoa/ideal_rho;
+<span class="keyword">end</span>
+<span class="comment">% Inlet</span>
+T_02 = Ta*(1 + (g-1)/2*(M^2));
+<span class="keyword">if</span> M&gt;1
+    n_d = 0.9*(1-.075*(M - 1)^1.35);
+<span class="keyword">else</span>
+    n_d = .9;
+<span class="keyword">end</span>
+P_02 = Pa*(1 + n_d*(T_02/Ta-1))^(g/(g-1));
+
+<span class="comment">% Fan</span>
+P_rf = 1.5;
+P_08 = P_02 * P_rf;
+n_f = .95;
+T_08 = T_02 * (1 + (1/n_f)*(P_rf^((g-1)/g)-1));
+u_ef = sqrt(2*n_f*g/(g-1)*R*T_08*(1-(Pa/P_08)^((g-1)/g)));
+
+<span class="comment">% Compressor</span>
+<span class="comment">%Input: P_rc</span>
+P_03 = P_rc*P_02;
+n_c = .95;
+T_03 = T_02*(1+(1/n_c)*(P_rc^((g-1)/g)-1));
+
+<span class="comment">% Burner</span>
+<span class="comment">%Input: T_04 (turbine inlet temp)</span>
+T_04 = T_04MAX; <span class="comment">%K</span>
+QR = 42000000; <span class="comment">%J/kg</span>
+C_p = 1005; <span class="comment">%J/kg</span>
+f = (T_04/T_03-1)/(QR/(C_p*T_03)-T_04/T_03);
+P_04 = .9*P_03;
+
+<span class="comment">% Turbine</span>
+n_t = .85;
+T_05 = T_04 - C_p/(n_c*n_t*C_p)*(T_03-T_02)-B*(T_08-T_02);
+P_05 = P_04*(1-1/n_t*(1-T_05/T_04))^(g/(g-1));
+
+<span class="comment">% No AB</span>
+T_06 = T_05;
+P_06 = P_05;
+
+<span class="comment">% Afterburner</span>
+Tmax_AB = 2000;
+T_06AB = Tmax_AB;
+P_06AB = P_05;
+fAB = (T_06AB/T_05-1)/(QR/(C_p*T_05)-T_06AB/T_05);
+<span class="comment">% Nozzle</span>
+n_n = .9;
+u_en = sqrt(2*n_n*g/(g-1)*R*T_06*(1-(Pa/P_06)^((g-1)/g)));
+u_enAB = sqrt(2*n_n*g/(g-1)*R*T_06AB*(1-(Pa/P_06AB)^((g-1)/g)));
+
+<span class="comment">%Thrust</span>
+SpT = ((1+f)*u_en+B*u_ef-(1+B)*u); <span class="comment">%N/kg</span>
+Thrust = SpT*m_dota;
+<span class="comment">%Thrust = m_dota*((1+f)*u_en+B*u_ef-(1+B)*u);</span>
+SpTAB = ((1+f)*u_enAB+B*u_ef-(1+B)*u);
+TSFC = f/SpT;
+ThrustAB = SpTAB*m_dota;
+TSFCAB = (fAB+f)/SpTAB;
+
+<span class="keyword">end</span>
+</pre><pre class="codeoutput error">Not enough input arguments.
+
+Error in afterburningTF (line 7)
+[Ta, ~, Pa, rhoa] = atmosisa(z);
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [m_dota, TSFC, Thrust, TSFCAB, ThrustAB] = afterburningTF(M, z, A_in, T_04MAX, P_rc, B)
+% M, Z, radius, T04_MAX, Compressor Pressure Ratio, Bypass Ratio
+% Engine Simulation
+% Flight Conditions
+
+% Altitude and air properties
+[Ta, ~, Pa, rhoa] = atmosisa(z);
+R = 287; %R/MM
+
+% Speed
+g = 1.4;
+u = M*sqrt(g*R*Ta);
+%m_dota = rhoa*A_in*u;
+T_total = Ta*(1+0.5*(g-1)*M^2);
+P_total = Pa*(T_total/Ta)^(g/(g-1));
+%m_dota = Pa*A_in*M*sqrt(g/T_total*9.807/R*(P_total/Pa)^((g-1)/g));
+design_mach = 0.9;
+design_z = 25000/3.281;
+ideal_m_dota = rhoa*A_in*u;
+design_m_dota = 150;
+if(M<design_mach && z < design_z)
+    m_dota = 150;
+elseif(z < design_z)
+    A_adjusted = A_in*1/(2*M/design_mach-1);
+    m_dota =  150*1/(2*M/design_mach-1);
+elseif(M < design_mach)
+    [~, ~, ~, ideal_rho] = atmosisa(design_z);
+    m_dota = design_m_dota*rhoa/ideal_rho;
+else
+    [~, ~, ~, ideal_rho] = atmosisa(design_z);
+    m_dota =  150*1/(2*M/design_mach-1)*rhoa/ideal_rho;
+end
+% Inlet
+T_02 = Ta*(1 + (g-1)/2*(M^2));
+if M>1
+    n_d = 0.9*(1-.075*(M - 1)^1.35);
+else
+    n_d = .9;
+end
+P_02 = Pa*(1 + n_d*(T_02/Ta-1))^(g/(g-1));
+
+% Fan
+P_rf = 1.5;
+P_08 = P_02 * P_rf;
+n_f = .95;
+T_08 = T_02 * (1 + (1/n_f)*(P_rf^((g-1)/g)-1));
+u_ef = sqrt(2*n_f*g/(g-1)*R*T_08*(1-(Pa/P_08)^((g-1)/g)));
+
+% Compressor
+%Input: P_rc
+P_03 = P_rc*P_02;
+n_c = .95;
+T_03 = T_02*(1+(1/n_c)*(P_rc^((g-1)/g)-1));
+
+% Burner
+%Input: T_04 (turbine inlet temp)
+T_04 = T_04MAX; %K
+QR = 42000000; %J/kg
+C_p = 1005; %J/kg
+f = (T_04/T_03-1)/(QR/(C_p*T_03)-T_04/T_03);
+P_04 = .9*P_03;
+
+% Turbine
+n_t = .85;
+T_05 = T_04 - C_p/(n_c*n_t*C_p)*(T_03-T_02)-B*(T_08-T_02);
+P_05 = P_04*(1-1/n_t*(1-T_05/T_04))^(g/(g-1));
+
+% No AB
+T_06 = T_05;
+P_06 = P_05;
+
+% Afterburner
+Tmax_AB = 2000;
+T_06AB = Tmax_AB;
+P_06AB = P_05;
+fAB = (T_06AB/T_05-1)/(QR/(C_p*T_05)-T_06AB/T_05);
+% Nozzle
+n_n = .9;
+u_en = sqrt(2*n_n*g/(g-1)*R*T_06*(1-(Pa/P_06)^((g-1)/g)));
+u_enAB = sqrt(2*n_n*g/(g-1)*R*T_06AB*(1-(Pa/P_06AB)^((g-1)/g)));
+
+%Thrust
+SpT = ((1+f)*u_en+B*u_ef-(1+B)*u); %N/kg
+Thrust = SpT*m_dota;
+%Thrust = m_dota*((1+f)*u_en+B*u_ef-(1+B)*u);
+SpTAB = ((1+f)*u_enAB+B*u_ef-(1+B)*u);
+TSFC = f/SpT;
+ThrustAB = SpTAB*m_dota;
+TSFCAB = (fAB+f)/SpTAB;
+
+end
+##### SOURCE END #####
+--></body></html>

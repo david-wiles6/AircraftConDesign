@@ -30,7 +30,7 @@ elseif M >= 1.21
     CD0 = 1.05*(Cf_total/S + 2.5*(1-.386*(M-1.2)^.57)*(1-pi*(sweep^.77)/100)*9*pi/2*(Amax/l(1)));
     CD0 = CD0/S;
     %dietrich kuchermann
-    D = 1.5*(CD0*q*S+M/(4*(M+3)*W*n));
+    D = 2*(CD0*q*S+M/(4*(M+3)*W*n));
     CD = D/q/S;
 else
    CD0 = 0;
